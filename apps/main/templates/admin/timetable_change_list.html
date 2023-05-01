@@ -1,0 +1,120 @@
+{% extends "admin/change_list.html" %}
+
+{% block content_title %}
+<h3> Time Table </h3>
+{% endblock %}
+
+{% block result_list %}
+<div class="container">
+    <div class="forms d-flex flex-row">
+        <form method="post" class="bg-light d-flex flex-row">
+            {% csrf_token %}
+            <div class="form-group d-flex pl-5 pr-5 mt-3 border-right border-3 border-secondary">
+                <label class="my-label pr-3" for="department">
+                    <h5>Department</h5>
+                </label>
+                <select class="form-control bg-dark rounded border-0" name="department" id="department">
+                    <option>IT</option>
+                    <option>CSE</option>
+                    <option>ECE</option>
+                    <option>EEE</option>
+                    <option>MECH</option>
+                    <option>Civil</option>
+                </select>
+            </div>
+            <div class="form-group d-flex pl-5 pr-5 mt-3 border-right border-3 border-secondary">
+                <label class="my-label pr-3" for="year">
+                    <h5>Year</h5>
+                </label>
+                <select class="form-control bg-dark rounded border-0" name="year" id="year">
+                    <option>First</option>
+                    <option>Second</option>
+                    <option>Third</option>
+                    <option>Fourth</option>
+                </select>
+            </div>
+            <div class="form-group d-flex pl-5 pr-5 mt-3 border-right border-3 border-secondary">
+                <label class="my-label pr-3" for="year">
+                    <h5>Date</h5>
+                </label>
+                <input type="date" name="date" id="date" class="form-control bg-dark rounded border-0">
+            </div>
+            <div class="pl-5 pr-5 mt-3">
+                <button class="btn btn-primary btn-sm p-2" type="submit">Get Timetable</button>
+            </div>
+        </form>
+    </div>
+
+
+
+    {% if values %}
+    <div class="d-flex justify-content-center align-items-center text-center p-2">
+        <h3 class="rounded text-center bg-light d-inline-block">
+            <b>Time Table For {{timetable.subject_name.year}} {{timetable.subject_name.department}}</b>
+        </h3>
+    </div>
+    <div class="bg-light">
+        <table class="table table-striped table-bordered">
+            <thead>
+                <tr>
+                    <th>Day</th>
+                    <th>1</th>
+                    <th>2</th>
+                    <th>3</th>
+                    <th>4</th>
+                    <th>5</th>
+                    <th>6</th>
+                    <th>7</th>
+                    
+                </tr>
+            </thead>
+            <tbody>
+                {% for data in timetable %}
+                <tr>
+                    <td>{{data.day}}</td>
+                    <td><a href="{{data.id}}/change">{{data.period_1.subject_name}}</a></td>
+                    <td><a href="{{data.id}}/change">{{data.period_2.subject_name}}</a></td>
+                    <td><a href="{{data.id}}/change">{{data.period_3.subject_name}}</a></td>
+                    <td><a href="{{data.id}}/change">{{data.period_4.subject_name}}</a></td>
+                    <td><a href="{{data.id}}/change">{{data.period_5.subject_name}}</a></td>
+                    <td><a href="{{data.id}}/change">{{data.period_6.subject_name}}</a></td>
+                    <td><a href="{{data.id}}/change">{{data.period_7.subject_name}}</a></td>
+                    
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <div class="bg-light">
+        <div>
+            <table class="table table-striped table-bordered">
+                <thead>
+                    <th>Subjects</th>
+                    <th>Faculty</th>
+                    <th>Role</th>
+                </thead>
+                <tbody>
+                    {% for i in sub %}
+                    <tr>
+                        <td>{{i.subject_name}}</td>
+                        <td>{{i.staff.name}}</td>
+                        <td>{{i.staff.role}}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+
+        </div>
+    </div>
+    {% else %}
+    <h3 class="ml-5">Select Department and Year</h3>
+    {% endif %}
+</div>
+</body>
+<script>
+    let today = new Date().toISOString().substr(0, 10);
+    document.getElementById("date").value = today;
+</script>
+{% endblock %}
+
+{% block pagination %}{% endblock %}
